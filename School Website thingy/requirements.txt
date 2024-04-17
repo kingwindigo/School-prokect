@@ -1,0 +1,4 @@
+pip
+flask
+Flask-SQLAlchemy
+flask-login

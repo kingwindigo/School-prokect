@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Analyzer{% endblock %} {% block content
+    %}
+    <h1>This is the Analyzer</h1>
+    
+
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Analyzer</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </head>
+        <body>
+        
+        <h2>Analyzer</h2>
+        <p>Data 1: <span id="data1"></span></p>
+        <p>Data 2: <span id="data2"></span></p>
+        <button onclick="calculate()">Calculate</button>
+        <p id="result"></p>
+        
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+        
+        <script>
+            // Function to calculate and update result
+            function calculate() {
+                var data1 = parseFloat(localStorage.getItem('data1'));
+                var data2 = parseFloat(localStorage.getItem('data2'));
+                
+                if (!isNaN(data1) && !isNaN(data2)) {
+                    var result = data1 + data2;
+                    document.getElementById('result').textContent = "Result: " + result;
+                    
+                    // Update chart with new data
+                    updateChart(result);
+                } else {
+                    document.getElementById('result').textContent = "Invalid Data";
+                }
+            }
+            
+            // Function to update the chart
+            function updateChart(result) {
+                const ctx = document.getElementById('myChart');
+        
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [result], // Example data for demonstration
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        
+            // Load initial chart when the page loads
+            window.onload = function() {
+                // Assuming initial data for the chart is the sum of data1 and data2
+                var data1 = parseFloat(localStorage.getItem('data1'));
+                var data2 = parseFloat(localStorage.getItem('data2'));
+                var initialResult = !isNaN(data1) && !isNaN(data2) ? data1 + data2 : 0;
+                updateChart(initialResult);
+            };
+        </script>
+        
+        </body>
+        </html>
+
+    {% endblock %}
+    
